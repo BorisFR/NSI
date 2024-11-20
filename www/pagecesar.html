@@ -1,123 +1,150 @@
 <html lang="fr-FR">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-32x32.png" sizes="32x32">
-<link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-192x192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-180x180.png">
-<meta name="msapplication-TileImage" content="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-270x270.png">
-<title>JUNIA - Semaine NSI</title>
-<link href="style.css" rel="stylesheet" />
-<script src="script.js"></script>
-<script>
-function encrypt(text, shift) {
-    let result = '';
-    for (let i = 0; i < text.length; i++) {
-        let char = text[i];
-        if (char.match(/[a-z]/i)) {
-            let code = text.charCodeAt(i);
-            if ((code >= 65) && (code <= 90)) {
-                char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
-            } else if ((code >= 97) && (code <= 122)) {
-                char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-192x192.png"
+        sizes="192x192">
+    <link rel="apple-touch-icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-180x180.png">
+    <meta name="msapplication-TileImage"
+        content="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-270x270.png">
+    <title>JUNIA - Semaine NSI</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="script.js"></script>
+    <script>
+        function encrypt(text, shift) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-z]/i)) {
+                    let code = text.charCodeAt(i);
+                    if ((code >= 65) && (code <= 90)) {
+                        char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                    } else if ((code >= 97) && (code <= 122)) {
+                        char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+                    }
+                }
+                result += char;
             }
-        }
-        result += char;
-    }
-    return result;
-};
-function clearOutput(){
-document.getElementById("labelResultCrypt").innerHTML = "- - - - -";
-};
-function changeKey(){
-document.getElementById("labelKey").innerHTML=document.getElementById("theKey").value;
-clearOutput();
-};
-function plus(){
-var key=parseInt(document.getElementById("theKey").value);
-if(key<26) key++;
-document.getElementById("theKey").value=key;
-clearOutput();
-document.getElementById("labelKey").innerHTML =  key;
-};
-function moins(){
-var key=parseInt(document.getElementById("theKey").value);
-if(key>1) key--;
-document.getElementById("theKey").value=key;
-clearOutput();
-document.getElementById("labelKey").innerHTML =  key;
-};
-function crypt(){
-var txt=document.getElementById("txtToCrypt").value;
-var key=parseInt(document.getElementById("theKey").value);
-var res=encrypt(txt,key);
-document.getElementById("labelResultCrypt").innerHTML=res;
-};
-function decrypt(){
-var txt=document.getElementById("txtToCrypt").value;
-var key=parseInt(document.getElementById("theKey").value);
-var res=encrypt(txt,26-key);
-document.getElementById("labelResultCrypt").innerHTML=res;
-};
-</script>
+            return result;
+        };
+        function clearOutput() {
+            document.getElementById("labelResultCrypt").innerHTML = "- - - - -";
+        };
+        function changeKey() {
+            document.getElementById("labelKey").innerHTML = document.getElementById("theKey").value;
+            clearOutput();
+        };
+        function plus() {
+            var key = parseInt(document.getElementById("theKey").value);
+            if (key < 26) key++;
+            document.getElementById("theKey").value = key;
+            clearOutput();
+            document.getElementById("labelKey").innerHTML = key;
+        };
+        function moins() {
+            var key = parseInt(document.getElementById("theKey").value);
+            if (key > 1) key--;
+            document.getElementById("theKey").value = key;
+            clearOutput();
+            document.getElementById("labelKey").innerHTML = key;
+        };
+        function crypt() {
+            var txt = document.getElementById("txtToCrypt").value;
+            var key = parseInt(document.getElementById("theKey").value);
+            var res = encrypt(txt, key);
+            document.getElementById("labelResultCrypt").innerHTML = res;
+        };
+        function decrypt() {
+            var txt = document.getElementById("txtToCrypt").value;
+            var key = parseInt(document.getElementById("theKey").value);
+            var res = encrypt(txt, 26 - key);
+            document.getElementById("labelResultCrypt").innerHTML = res;
+        };
+    </script>
 </head>
+
 <body>
-<div w3-include-html="header.html"></div>
-<thetitle>chiffrement de César</thetitle>
-<div class="bgdark">
-<div class="right"><img src="caesar3.png" class="imgcesar1" /></div>
-<div class="surligne big3">Définition <img src="lolo_wikipedia.png" class="imgwikipedia" /></div>
-<br />
-<div class="justify">En cryptographie, le chiffrement par décalage, aussi connu comme le chiffre de César ou le code de César, est une méthode de chiffrement très simple utilisée par Jules César dans ses correspondances secrètes.<br/>
-Le texte chiffré s'obtient en remplaçant chaque lettre du texte clair original par une lettre à distance fixe, toujours du même côté, dans l'ordre de l'alphabet. Pour les dernières lettres (dans le cas d'un décalage à droite), on reprend au début. Par exemple avec un décalage de 3 vers la droite, A est remplacé par D, B devient E, et ainsi jusqu'à W qui devient Z, puis X devient A etc. Il s'agit d'une permutation circulaire de l'alphabet. La longueur du décalage, 3 dans l'exemple évoqué, constitue la clé du chiffrement qu'il suffit de transmettre au destinataire — s'il sait déjà qu'il s'agit d'un chiffrement de César — pour que celui-ci puisse déchiffrer le message. Dans le cas de l'alphabet latin, le chiffre de César n'a que 26 clés possibles (y compris la clé nulle, qui ne modifie pas le texte).</div>
-<br />
-</div>
-<hr />
-<div class="bgdark">
-<div class="right"></div>
-<div class="surligne big3">Mathémathiques</div>
-<div>En utilisant la congruence (relation qui unit deux entiers) sur les entiers et en transformant chaque lettre en nombre (A=0, B=1, C=2, ... Z=25), pour encoder une lettre <i class="surligne">x</i> avec une clé <i class="surligne">n</i> il suffit d'appliquer la formule : <i class="surligne">E<span class="small">n</span>(x)=(x+n)[26]</i>.<br/>Et pour décoder une lettre : <i class="surligne">E<span class="small">n</span>(x)=(x&minus;n)[26]</i>.<br/>Cette méthode est une substitution monoalphabétique.</div>
-<br/>
-</div>
-<hr />
-<div class="bgdark">
-<div class="right"></div>
-<div class="surligne big3">Et si on programmait ? <img src="ia_code.png" class="imgcopilot" /></div>
-<img src="programmecesar.png" class="imgpgmcesar" />
-<img src="pgmcesarresult.png" class="imgpgmcesar" />
-<br/>
-</div>
-<hr />
-<div class="bgdark">
-<div class="right"></div>
-<div class="surligne big3">En live</div>
-<div class="headform">La clé :</div>
-<div class="form"><button onclick="moins();">&minus;</button><input type="range" id="theKey" name="clef" min="1" max="26" value="1" onchange="changeKey();" /><button onclick="plus();">+</button>
-<label for="clef" id="labelKey">1</label>
-</div>
-<div class="headform">Le texte à cacher :</div>
-<div class="form"><input type="text" id="txtToCrypt" class="textbox" value="Bienvenue chez Junia" onclick="clearOutput();" />
-<button id="btCrypt" onclick="crypt();">chiffrer</button>
-<button id="btDeCrypt" onclick="decrypt();">déchiffrer</button></div>
-<div class="headform">Le résultat :</div>
-<div class="form"><label id="labelResultCrypt">- - - - -</label></div
-<br/>
-</div>
-<hr />
-<div class="bgdark">
-<div class="right"></div>
-<div class="surligne big3">Faiblesses</div>
-<div>Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par substitution.<br/>On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span class="surligne">analyse fréquentielle</span>.</div>
-<img src="frequence_aphabet.png" class="imganalysefrequentielle" />
-<div><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux distributions des lettres dans le jeu de Scrabble &#128515;</div>
-<img src="scrabblepoints.png" class="imganalysefrequentielle" />
-<div class="surligne big3">Application immédiate</div>
-<div>Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre message "Cjfowfovf difa Kvojb" :</div>
-<img src="crackcesar.png" class="imganalysefrequentielle" />
-<div>Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce message codé, il doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé de valeur <span class="surligne">1</span>.</div>
-<br/>
-</div>
-<br />
-<div w3-include-html="footer.html"></div>
+    <div w3-include-html="header.html"></div>
+    <thetitle>chiffrement de César</thetitle>
+    <div class="bgdark">
+        <div class="right"><img src="caesar3.png" class="imgcesar1" /></div>
+        <div class="surligne big3">Définition <img src="lolo_wikipedia.png" class="imgwikipedia" /></div>
+        <br />
+        <div class="justify">En cryptographie, le chiffrement par décalage, aussi connu comme le chiffre de César ou le
+            code de César, est une méthode de chiffrement très simple utilisée par Jules César dans ses correspondances
+            secrètes.<br />
+            Le texte chiffré s'obtient en remplaçant chaque lettre du texte clair original par une lettre à distance
+            fixe, toujours du même côté, dans l'ordre de l'alphabet. Pour les dernières lettres (dans le cas d'un
+            décalage à droite), on reprend au début. Par exemple avec un décalage de 3 vers la droite, A est remplacé
+            par D, B devient E, et ainsi jusqu'à W qui devient Z, puis X devient A etc. Il s'agit d'une permutation
+            circulaire de l'alphabet. La longueur du décalage, 3 dans l'exemple évoqué, constitue la clé du chiffrement
+            qu'il suffit de transmettre au destinataire — s'il sait déjà qu'il s'agit d'un chiffrement de César — pour
+            que celui-ci puisse déchiffrer le message. Dans le cas de l'alphabet latin, le chiffre de César n'a que 26
+            clés possibles (y compris la clé nulle, qui ne modifie pas le texte).</div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Mathémathiques</div>
+        <div>En utilisant la congruence (relation qui unit deux entiers) sur les entiers et en transformant chaque
+            lettre en nombre (A=0, B=1, C=2, ... Z=25), pour encoder une lettre <i class="surligne">x</i> avec une clé
+            <i class="surligne">n</i> il suffit d'appliquer la formule : <i class="surligne">E<span
+                    class="small">n</span>(x)=(x+n)[26]</i>.<br />Et pour décoder une lettre : <i
+                class="surligne">E<span class="small">n</span>(x)=(x&minus;n)[26]</i>.<br />Cette méthode est une
+            substitution monoalphabétique.</div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Et si on programmait ? <img src="ia_code.png" class="imgcopilot" /></div>
+        <img src="programmecesar.png" class="imgpgmcesar" />
+        <img src="pgmcesarresult.png" class="imgpgmcesar" />
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">En live</div>
+        <div class="headform">La clé :</div>
+        <div class="form"><button onclick="moins();">&minus;</button><input type="range" id="theKey" name="clef" min="1"
+                max="26" value="1" onchange="changeKey();" /><button onclick="plus();">+</button>
+            <label for="clef" id="labelKey">1</label>
+        </div>
+        <div class="headform">Le texte à cacher :</div>
+        <div class="form"><input type="text" id="txtToCrypt" class="textbox" value="Bienvenue chez Junia"
+                onclick="clearOutput();" />
+            <button id="btCrypt" onclick="crypt();">chiffrer</button>
+            <button id="btDeCrypt" onclick="decrypt();">déchiffrer</button>
+        </div>
+        <div class="headform">Le résultat :</div>
+        <div class="form"><label id="labelResultCrypt">- - - - -</label></div <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Faiblesses</div>
+        <div>Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
+            substitution.<br />On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span
+                class="surligne">analyse fréquentielle</span>.</div>
+        <img src="frequence_aphabet.png" class="imganalysefrequentielle" />
+        <div><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux distributions des lettres
+            dans le jeu de Scrabble &#128515;</div>
+        <img src="scrabblepoints.png" class="imganalysefrequentielle" />
+        <div class="surligne big3">Application immédiate</div>
+        <div>Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre message "Cjfowfovf
+            difa Kvojb" :</div>
+        <img src="crackcesar.png" class="imganalysefrequentielle" />
+        <div>Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce message codé, il
+            doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé de
+            valeur <span class="surligne">1</span>.</div>
+        <br />
+    </div>
+    <br />
+    <div w3-include-html="footer.html"></div>
 </body>
+
 </html>
