@@ -62,7 +62,56 @@
             var res = encrypt(txt, 26 - key);
             document.getElementById("labelResultCrypt").innerHTML = res;
         };
-    </script>
+        function clearDisplay() {
+            document.getElementById("display").innerHTML = ">_";
+            document.getElementById("display").rows = 1;
+            document.getElementById("elaps").innerHTML = "";
+        };
+        function clearOutputCrack() { clearDisplay(); };
+        function displayAddText(value) {
+            document.getElementById("display").innerHTML = document.getElementById("display").innerHTML + value + "\r\n";
+            document.getElementById("display").rows = document.getElementById("display").rows + 1;
+        };
+        function crack() {
+            clearDisplay();
+            var start = Date.now();
+            document.getElementById("display").innerHTML = "";
+            var txt = document.getElementById("txtToCrack").value;
+            for (let i = 1; i < 26; i++) {
+                var res = encrypt(txt, 26 - i);
+                displayAddText("Clé " + i + " : " + res);
+                var end = Date.now();
+                document.getElementById("elaps").innerHTML = "(Durée :" + (end - start) + "ms)";
+            }
+            document.getElementById("display").innerHTML = document.getElementById("display").innerHTML + ">_";
+        };
+        function clearOutputHack() {
+            document.getElementById("txtToCrack").value = "";
+        };
+        function changeKeyHack() {
+            document.getElementById("labelKeyHack").innerHTML = document.getElementById("theKeyHack").value;
+            clearOutputHack();
+        };
+        function plusHack() {
+            var key = parseInt(document.getElementById("theKeyHack").value);
+            if (key < 26) key++;
+            document.getElementById("theKeyHack").value = key;
+            clearOutputHack();
+            document.getElementById("labelKeyHack").innerHTML = key;
+        };
+        function moinsHack() {
+            var key = parseInt(document.getElementById("theKeyHack").value);
+            if (key > 1) key--;
+            document.getElementById("theKeyHack").value = key;
+            clearOutput();
+            document.getElementById("labelKeyHack").innerHTML = key;
+        };
+        function cryptForHack() {
+            var txt = document.getElementById("txtToHack").value;
+            var key = parseInt(document.getElementById("theKeyHack").value);
+            var res = encrypt(txt, key);
+            document.getElementById("txtToCrack").value = res;
+        };    </script>
 </head>
 
 <body>
@@ -94,7 +143,8 @@
             <i class="surligne">n</i> il suffit d'appliquer la formule : <i class="surligne">E<span
                     class="small">n</span>(x)=(x+n)[26]</i>.<br />Et pour décoder une lettre : <i
                 class="surligne">E<span class="small">n</span>(x)=(x&minus;n)[26]</i>.<br />Cette méthode est une
-            substitution monoalphabétique.</div>
+            substitution monoalphabétique.
+        </div>
         <br />
     </div>
     <hr />
@@ -126,7 +176,7 @@
     <hr />
     <div class="bgdark">
         <div class="right"></div>
-        <div class="surligne big3">Faiblesses</div>
+        <div class="surligne big3">Faiblesse</div>
         <div>Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
             substitution.<br />On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span
                 class="surligne">analyse fréquentielle</span>.</div>
@@ -141,6 +191,29 @@
         <div>Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce message codé, il
             doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé de
             valeur <span class="surligne">1</span>.</div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Une attaque brute force</div>
+        <div class="headform">La clé :</div>
+        <div class="form"><button onclick="moinsHack();">&minus;</button><input type="range" id="theKeyHack" name="clef"
+                min="1" max="26" value="17" onchange="changeKeyHack();" /><button onclick="plusHack();">+</button>
+            <label for="clef" id="labelKeyHack">17</label>
+        </div>
+        <div class="headform">Le texte à cacher :</div>
+        <div class="form"><input type="text" size="44" id="txtToHack" class="textbox"
+                value="Texte long pour tester une attaque brute force" onclick="clearOutputHack();" />
+            <button id="btCrypt" onclick="cryptForHack();">chiffrer</button>
+        </div>
+        <div class="headform">Le texte à hacker :</div>
+        <div class="form"><input type="text" size="44" id="txtToCrack" class="textbox" value=""
+                onclick="clearOutputCrack();" />
+            <button onclick="crack();">GO!</button>
+        </div>
+        <div class="headform">Déroulement du hack : <span id="elaps" class="surligne"></span></div>
+        <div class="form"><textarea cols="68" rows="1" id="display">>_</textarea></div>
         <br />
     </div>
     <br />
