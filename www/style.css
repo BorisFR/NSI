@@ -56,6 +56,13 @@ h1 {
     margin-bottom: 1.5vw;
 }
 
+.imgcoincidence {
+    width: 30vw;
+    margin-top: 1.5vw;
+    margin-left: 3vw;
+    margin-bottom: 1.5vw;
+}
+
 .imgcopilot {
     display: inline-block;
     vertical-align: middle;

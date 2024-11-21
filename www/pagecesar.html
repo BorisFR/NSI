@@ -147,81 +147,103 @@
             substitution monoalphabétique.
         </div>
         <br />
-    </div>
-    <hr />
-    <div class="bgdark">
-        <div class="right"></div>
-        <div class="surligne big3">Et si on programmait ? <img src="ia_code.png" class="imgcopilot" /></div>
-        <img src="programmecesar.png" class="imgpgmcesar" />
-        <img src="pgmcesarresult.png" class="imgpgmcesar" />
+        <div class="justify">En désignant la <i class="surligne">i<sup>e</sup></i> lettre du texte clair par <i
+                class="surligne">Texte[i]</i>, la <i class="surligne">i<sup>e</sup></i> du chiffré par
+            <i class="surligne">Chiffré[i]</i>, elle se formalise par :
+            <br />
+            <ul>
+                <li>
+                    <i class="surligne">Chiffré[i] = (Texte[i] + Clé) modulo 26</i>
+                </li>
+                <li>
+                    <i class="surligne">Texte[i] = (Chiffré[i] - Clé) modulo 26</i>
+                </li>
+            </ul>
+            <br />
+            où x modulo 26 désigne le reste de la division entière de x par 26. Pour le chiffrement il suffit
+            d'effectuer l'addition des deux lettres puis de soustraire 26 si le résultat dépasse 26. Pour le
+            déchiffrement il suffit d'effectuer la soustraction et d'additionner 26 si le résultat est négatif. Le
+            déchiffrement est aussi une opération identique à celle du chiffrement pour la clé obtenue par Clé = 26
+            - Clé.
+            <br />
+        </div>
+        <hr />
+        <div class="bgdark">
+            <div class="right"></div>
+            <div class="surligne big3">Et si on programmait ? <img src="ia_code.png" class="imgcopilot" /></div>
+            <img src="programmecesar.png" class="imgpgmcesar" />
+            <img src="pgmcesarresult.png" class="imgpgmcesar" />
+            <br />
+        </div>
+        <hr />
+        <div class="bgdark">
+            <div class="right"></div>
+            <div class="surligne big3">En live</div>
+            <div class="headform">La clé :</div>
+            <div class="form"><button onclick="moins();">&minus;</button><input type="range" id="theKey" name="clef"
+                    min="1" max="26" value="1" onchange="changeKey();" /><button onclick="plus();">+</button>
+                <label for="clef" id="labelKey">1</label>
+            </div>
+            <div class="headform">Le texte à cacher :</div>
+            <div class="form"><input type="text" id="txtToCrypt" class="textbox" value="Bienvenue chez Junia"
+                    onclick="clearOutput();" />
+                <button id="btCrypt" onclick="crypt();">chiffrer</button>
+                <button id="btDeCrypt" onclick="decrypt();">déchiffrer</button>
+            </div>
+            <div class="headform">Le résultat :</div>
+            <div class="form"><label id="labelResultCrypt">- - - - -</label></div <br />
+        </div>
+        <hr />
+        <div class="bgdark">
+            <div class="right"></div>
+            <div class="surligne big3">Faiblesse</div>
+            <div class="justify">Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
+                substitution.<br />On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span
+                    class="surligne">analyse fréquentielle</span>.</div>
+            <img src="frequence_aphabet.png" class="imganalysefrequentielle" />
+            <div class="justify"><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux
+                distributions des lettres
+                dans le jeu de Scrabble &#128515;</div>
+            <img src="scrabblepoints.png" class="imganalysefrequentielle" />
+            <div class="surligne big3">Application immédiate</div>
+            <div class="justify">Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre
+                message "Cjfowfovf
+                difa Kvojb" :</div>
+            <img src="crackcesar.png" class="imganalysefrequentielle" />
+            <div class="justify">Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans
+                ce
+                message codé, il
+                doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé
+                de
+                valeur <span class="surligne">1</span>.</div>
+            <br />
+        </div>
+        <hr />
+        <div class="bgdark">
+            <div class="right"></div>
+            <div class="surligne big3">Une attaque brute force</div>
+            <div class="headform">La clé :</div>
+            <div class="form"><button onclick="moinsHack();">&minus;</button><input type="range" id="theKeyHack"
+                    name="clef" min="1" max="26" value="17" onchange="changeKeyHack();" /><button
+                    onclick="plusHack();">+</button>
+                <label for="clef" id="labelKeyHack">17</label>
+            </div>
+            <div class="headform">Le texte à cacher :</div>
+            <div class="form"><input type="text" size="44" id="txtToHack" class="textbox"
+                    value="Texte long pour tester une attaque brute force" onclick="clearOutputHack();" />
+                <button id="btCrypt" onclick="cryptForHack();">chiffrer</button>
+            </div>
+            <div class="headform">Le texte à hacker :</div>
+            <div class="form"><input type="text" size="44" id="txtToCrack" class="textbox" value=""
+                    onclick="clearOutputCrack();" />
+                <button onclick="crack();">GO!</button>
+            </div>
+            <div class="headform">Déroulement du hack : <span id="elaps" class="surligne"></span></div>
+            <div class="form"><textarea cols="66" rows="1" id="display">>_</textarea></div>
+            <br />
+        </div>
         <br />
-    </div>
-    <hr />
-    <div class="bgdark">
-        <div class="right"></div>
-        <div class="surligne big3">En live</div>
-        <div class="headform">La clé :</div>
-        <div class="form"><button onclick="moins();">&minus;</button><input type="range" id="theKey" name="clef" min="1"
-                max="26" value="1" onchange="changeKey();" /><button onclick="plus();">+</button>
-            <label for="clef" id="labelKey">1</label>
-        </div>
-        <div class="headform">Le texte à cacher :</div>
-        <div class="form"><input type="text" id="txtToCrypt" class="textbox" value="Bienvenue chez Junia"
-                onclick="clearOutput();" />
-            <button id="btCrypt" onclick="crypt();">chiffrer</button>
-            <button id="btDeCrypt" onclick="decrypt();">déchiffrer</button>
-        </div>
-        <div class="headform">Le résultat :</div>
-        <div class="form"><label id="labelResultCrypt">- - - - -</label></div <br />
-    </div>
-    <hr />
-    <div class="bgdark">
-        <div class="right"></div>
-        <div class="surligne big3">Faiblesse</div>
-        <div class="justify">Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
-            substitution.<br />On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span
-                class="surligne">analyse fréquentielle</span>.</div>
-        <img src="frequence_aphabet.png" class="imganalysefrequentielle" />
-        <div class="justify"><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux
-            distributions des lettres
-            dans le jeu de Scrabble &#128515;</div>
-        <img src="scrabblepoints.png" class="imganalysefrequentielle" />
-        <div class="surligne big3">Application immédiate</div>
-        <div class="justify">Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre
-            message "Cjfowfovf
-            difa Kvojb" :</div>
-        <img src="crackcesar.png" class="imganalysefrequentielle" />
-        <div class="justify">Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce
-            message codé, il
-            doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé de
-            valeur <span class="surligne">1</span>.</div>
-        <br />
-    </div>
-    <hr />
-    <div class="bgdark">
-        <div class="right"></div>
-        <div class="surligne big3">Une attaque brute force</div>
-        <div class="headform">La clé :</div>
-        <div class="form"><button onclick="moinsHack();">&minus;</button><input type="range" id="theKeyHack" name="clef"
-                min="1" max="26" value="17" onchange="changeKeyHack();" /><button onclick="plusHack();">+</button>
-            <label for="clef" id="labelKeyHack">17</label>
-        </div>
-        <div class="headform">Le texte à cacher :</div>
-        <div class="form"><input type="text" size="44" id="txtToHack" class="textbox"
-                value="Texte long pour tester une attaque brute force" onclick="clearOutputHack();" />
-            <button id="btCrypt" onclick="cryptForHack();">chiffrer</button>
-        </div>
-        <div class="headform">Le texte à hacker :</div>
-        <div class="form"><input type="text" size="44" id="txtToCrack" class="textbox" value=""
-                onclick="clearOutputCrack();" />
-            <button onclick="crack();">GO!</button>
-        </div>
-        <div class="headform">Déroulement du hack : <span id="elaps" class="surligne"></span></div>
-        <div class="form"><textarea cols="66" rows="1" id="display">>_</textarea></div>
-        <br />
-    </div>
-    <br />
-    <div w3-include-html="footer.html"></div>
+        <div w3-include-html="footer.html"></div>
 </body>
 
 </html>
