@@ -41,6 +41,7 @@
             document.getElementById("display").rows = document.getElementById("display").rows + length;
             var end = Date.now();
             document.getElementById("elaps").innerHTML = "(Durée : " + (end - start) + "ms)";
+            document.getElementById("display").innerHTML = document.getElementById("display").innerHTML + ">_";
         };
 
         function indiceDeCoincidence(texte) {
