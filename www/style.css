@@ -97,6 +97,7 @@ hr {
 
 .justify {
     text-align: justify;
+    text-indent: 4ch;
 }
 
 .right {
@@ -228,4 +229,13 @@ textarea {
     border-color: #EC6948;
     border-radius: 1vw;
     border-width: 0.5vw;
+}
+
+ul {
+    margin-top: 1vw;
+    margin-bottom: -2vw;
+    margin-left: 10vw;
+    list-style-type: square;
+    text-indent: 0vw;
+    line-height: 3.5vw;
 }

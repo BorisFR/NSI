@@ -81,7 +81,7 @@
                 var res = encrypt(txt, 26 - i);
                 displayAddText("Clé " + i + " : " + res);
                 var end = Date.now();
-                document.getElementById("elaps").innerHTML = "(Durée :" + (end - start) + "ms)";
+                document.getElementById("elaps").innerHTML = "(Durée : " + (end - start) + "ms)";
             }
             document.getElementById("display").innerHTML = document.getElementById("display").innerHTML + ">_";
         };
@@ -138,7 +138,8 @@
     <div class="bgdark">
         <div class="right"></div>
         <div class="surligne big3">Mathémathiques</div>
-        <div>En utilisant la congruence (relation qui unit deux entiers) sur les entiers et en transformant chaque
+        <div class="justify">En utilisant la congruence (relation qui unit deux entiers) sur les entiers et en
+            transformant chaque
             lettre en nombre (A=0, B=1, C=2, ... Z=25), pour encoder une lettre <i class="surligne">x</i> avec une clé
             <i class="surligne">n</i> il suffit d'appliquer la formule : <i class="surligne">E<span
                     class="small">n</span>(x)=(x+n)[26]</i>.<br />Et pour décoder une lettre : <i
@@ -177,18 +178,21 @@
     <div class="bgdark">
         <div class="right"></div>
         <div class="surligne big3">Faiblesse</div>
-        <div>Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
+        <div class="justify">Pour faire une attaque de chiffrement, un des premiers tests effectué est le codage par
             substitution.<br />On se base pour cela sur la fréquence d'utilisation des lettres, appelée : <span
                 class="surligne">analyse fréquentielle</span>.</div>
         <img src="frequence_aphabet.png" class="imganalysefrequentielle" />
-        <div><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux distributions des lettres
+        <div class="justify"><span class="surligne">Anecdote : </span>cela correspond à peu de chose près aux
+            distributions des lettres
             dans le jeu de Scrabble &#128515;</div>
         <img src="scrabblepoints.png" class="imganalysefrequentielle" />
         <div class="surligne big3">Application immédiate</div>
-        <div>Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre message "Cjfowfovf
+        <div class="justify">Utilisons cette méthode dans une feuille de calcul Microsoft Excel pour décoder notre
+            message "Cjfowfovf
             difa Kvojb" :</div>
         <img src="crackcesar.png" class="imganalysefrequentielle" />
-        <div>Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce message codé, il
+        <div class="justify">Comme la lettre <span class="surligne">"F"</span> est celle qui apparaît le plus dans ce
+            message codé, il
             doit "surement" correspondre à la lettre <span class="surligne">"E"</span>. Nous obtenons donc une clé de
             valeur <span class="surligne">1</span>.</div>
         <br />
@@ -213,7 +217,7 @@
             <button onclick="crack();">GO!</button>
         </div>
         <div class="headform">Déroulement du hack : <span id="elaps" class="surligne"></span></div>
-        <div class="form"><textarea cols="68" rows="1" id="display">>_</textarea></div>
+        <div class="form"><textarea cols="66" rows="1" id="display">>_</textarea></div>
         <br />
     </div>
     <br />

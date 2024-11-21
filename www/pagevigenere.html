@@ -1,0 +1,242 @@
+<html lang="fr-FR">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-192x192.png"
+        sizes="192x192">
+    <link rel="apple-touch-icon" href="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-180x180.png">
+    <meta name="msapplication-TileImage"
+        content="https://www.junia.com/wp-content/uploads/2022/07/cropped-favicon-270x270.png">
+    <title>JUNIA - Semaine NSI</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="script.js"></script>
+
+    <script>
+        function clearDisplay() {
+            document.getElementById("display").innerHTML = ">_";
+            document.getElementById("display").rows = 1;
+            document.getElementById("elaps").innerHTML = "";
+        };
+        function clearOutputCrack() { clearDisplay(); };
+        function displayAddText(value) {
+            document.getElementById("display").innerHTML = document.getElementById("display").innerHTML + value + "\r\n";
+            document.getElementById("display").rows = document.getElementById("display").rows + 1;
+        };
+        function crack() {
+            clearDisplay();
+            var start = Date.now();
+            document.getElementById("display").innerHTML = "";
+            var txt = document.getElementById("txtToCrack").value;
+            let texteChiffre = "KQOWEFVJPUJUUNUKGLMEKJINMWUXFQMKJBGWRLFNFGHUDWUUMBSVLPSNCMUEKQCTESWREEKOYSSIWCTUAXYOTAPXPLWPNTCGOJBGFQHTDWXIZAYGFFNSXCSEYNCTSSPNTUJNYTGGWZGRWUUNEJUUQEAPYMEKQHUIDUXFPGUYTSMTFFSHNUOCZGMRUWEYTRGKMEEDCTVRECFBDJQCUSWVBPNLGOYLSKMTEFVJJTWWMFMWPNMEMTMHRSPXFSSKFFSTNUOCZGMDOEOYEEKCPJRGPMURSKHFRSEIUEVGOYCWXIZAYGOSAANYDOEOYJLWUNHAMEBFELXYVLWNOJNSIOFRWUCCESWKVIDGMUCGOCRUWGNMAAFFVNSIUDEKQHCEUCPFCMPVSUDGAVEMNYMAMVLFMAOYFNTQCUAFVFJNXKLNEIWCWODCCULWRIFTWGMUSWOVMATNYBUHTCOCWFYTNMGYTQMKBBNLGFBTWOJFTWGNTEJKNEEDCLDHWTYYIDGMVRDGMPLSWGJLAGOEEKJOFEKUYTAANYTDWIYBNLNYNPWEBFNLFYNAJEBFR";
+            let maxLongueur = 20; // Vous pouvez ajuster cette valeur
+            let resultat = trouverCleEtDecoder(texteChiffre, maxLongueur);
+            //displayAddText("Clé estimée : " + resultat.cle);
+            displayAddText("Longueur de clé estimée : " + resultat.cle.length);
+            displayAddText("Clé estimée : " + resultat.cleNumber + " (" + resultat.cle + ")");
+            displayAddText("Texte déchiffré:");
+            displayAddText(resultat.texteDecode);
+            var length = resultat.texteDecode.length / 69;
+            document.getElementById("display").rows = document.getElementById("display").rows + length;
+            var end = Date.now();
+            document.getElementById("elaps").innerHTML = "(Durée : " + (end - start) + "ms)";
+        };
+
+        function indiceDeCoincidence(texte) {
+            texte = texte.toUpperCase().replace(/\s/g, '');
+            let frequences = Array(26).fill(0);
+            let totalLettres = texte.length;
+
+            for (let i = 0; i < totalLettres; i++) {
+                let lettre = texte.charCodeAt(i) - 65;
+                if (lettre >= 0 && lettre < 26) {
+                    frequences[lettre]++;
+                }
+            }
+
+            let ic = 0;
+            for (let i = 0; i < 26; i++) {
+                ic += frequences[i] * (frequences[i] - 1);
+            }
+            ic /= totalLettres * (totalLettres - 1);
+
+            return ic;
+        }
+
+        function calculerICPourLongueurCle(texte, longueurCle) {
+            let icTotal = 0;
+            for (let i = 0; i < longueurCle; i++) {
+                let sousTexte = '';
+                for (let j = i; j < texte.length; j += longueurCle) {
+                    sousTexte += texte[j];
+                }
+                icTotal += indiceDeCoincidence(sousTexte);
+            }
+            return icTotal / longueurCle;
+        }
+
+        function trouverLongueurCle(texte, maxLongueur) {
+            let meilleureLongueur = 1;
+            let meilleurIC = 0;
+
+            for (let longueur = 1; longueur <= maxLongueur; longueur++) {
+                let ic = calculerICPourLongueurCle(texte, longueur);
+                if (ic > meilleurIC) {
+                    meilleurIC = ic;
+                    meilleureLongueur = longueur;
+                }
+            }
+
+            return meilleureLongueur;
+        }
+
+        function vigenereDecode(message, key) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            message = message.toUpperCase().replace(/[^A-Z]/g, '');
+            key = key.toUpperCase().replace(/[^A-Z]/g, '');
+            let decodedMessage = '';
+            let keyIndex = 0;
+
+            for (let i = 0; i < message.length; i++) {
+                const messageChar = message[i];
+                const messageIndex = alphabet.indexOf(messageChar);
+                const keyChar = key[keyIndex % key.length];
+                const keyIndexInAlphabet = alphabet.indexOf(keyChar);
+
+                if (messageIndex !== -1) {
+                    const decodedIndex = (messageIndex - keyIndexInAlphabet + 26) % 26;
+                    decodedMessage += alphabet[decodedIndex];
+                    keyIndex++;
+                } else {
+                    decodedMessage += messageChar;
+                }
+            }
+
+            return decodedMessage;
+        }
+
+        function trouverCleEtDecoder(texte, maxLongueur) {
+            const longueurCle = trouverLongueurCle(texte, maxLongueur);
+            let cle = '';
+            let cleNumber = '';
+
+            for (let i = 0; i < longueurCle; i++) {
+                let sousTexte = '';
+                for (let j = i; j < texte.length; j += longueurCle) {
+                    sousTexte += texte[j];
+                }
+
+                let frequences = Array(26).fill(0);
+                for (let k = 0; k < sousTexte.length; k++) {
+                    let lettre = sousTexte.charCodeAt(k) - 65;
+                    if (lettre >= 0 && lettre < 26) {
+                        frequences[lettre]++;
+                    }
+                }
+
+                let maxFreq = Math.max(...frequences);
+                let lettrePlusFrequent = frequences.indexOf(maxFreq);
+                let lettreCle = (lettrePlusFrequent - 4 + 26) % 26; // 'E' est la lettre la plus fréquente en français
+                cle += String.fromCharCode(lettreCle + 65);
+                cleNumber += lettreCle.toString().padStart(2, '0') + " ";
+            }
+
+            return {
+                cle: cle,
+                texteDecode: vigenereDecode(texte, cle),
+                cleNumber: cleNumber
+            };
+        }
+
+        // Exemple d'utilisation
+        //let texteChiffre = "KQOWEFVJPUJUUNUKGLMEKJINMWUXFQMKJBGWRLFNFGHUDWUUMBSVLPSNCMUEKQCTESWREEKOYSSIWCTUAXYOTAPXPLWPNTCGOJBGFQHTDWXIZAYGFFNSXCSEYNCTSSPNTUJNYTGGWZGRWUUNEJUUQEAPYMEKQHUIDUXFPGUYTSMTFFSHNUOCZGMRUWEYTRGKMEEDCTVRECFBDJQCUSWVBPNLGOYLSKMTEFVJJTWWMFMWPNMEMTMHRSPXFSSKFFSTNUOCZGMDOEOYEEKCPJRGPMURSKHFRSEIUEVGOYCWXIZAYGOSAANYDOEOYJLWUNHAMEBFELXYVLWNOJNSIOFRWUCCESWKVIDGMUCGOCRUWGNMAAFFVNSIUDEKQHCEUCPFCMPVSUDGAVEMNYMAMVLFMAOYFNTQCUAFVFJNXKLNEIWCWODCCULWRIFTWGMUSWOVMATNYBUHTCOCWFYTNMGYTQMKBBNLGFBTWOJFTWGNTEJKNEEDCLDHWTYYIDGMVRDGMPLSWGJLAGOEEKJOFEKUYTAANYTDWIYBNLNYNPWEBFNLFYNAJEBFR";
+        //let maxLongueur = 20; // Vous pouvez ajuster cette valeur
+        //let resultat = trouverCleEtDecoder(texteChiffre, maxLongueur);
+        //console.log("Clé estimée:", resultat.cle);
+        //console.log("Texte déchiffré:", resultat.texteDecode);
+    </script>
+</head>
+
+<body>
+    <div w3-include-html="header.html"></div>
+    <thetitle>chiffrement de Vigenère</thetitle>
+    <div class="bgdark">
+        <div class="surligne big3">Définition <img src="lolo_wikipedia.png" class="imgwikipedia" /></div>
+        <br />
+        <div class="justify">Le chiffre de Vigenère est un système de chiffrement par substitution polyalphabétique dans
+            lequel une même lettre du message clair peut, suivant sa position dans celui-ci, être remplacée par des
+            lettres différentes, contrairement à un système de chiffrement mono alphabétique comme le chiffre de César
+            (qu'il utilise cependant comme composant). Cette méthode résiste ainsi à l'analyse de fréquences, ce qui est
+            un avantage décisif sur les chiffrements mono alphabétiques.
+        </div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Faiblesse</div>
+        <div class="justify">Le chiffre de Vigenère a été percé par le major prussien Friedrich Kasiski qui a
+            publié sa méthode en 1863. Depuis cette époque, il n‘offre plus aucune sécurité. <i class="surligne">On
+                nomme "test de Kasisi" la méthode pour déterminer cette longueur de clé.</i>
+            <br />
+            On pense que Charles Babbage effectua la première véritable cryptanalyse du chiffre de Vigenère vers 1854.
+            <br />
+            La méthode fût améliorée en 1920 et se nomme désormais <i class="surligne">indice de coïncidence</i>.
+            <br />
+            L'indice permet de savoir si un texte a été chiffré avec un chiffre mono-alphabétique (code de César) ou un
+            chiffre poly-alphabétique en étudiant la probabilité de répétition des lettres du message chiffré. Il donne
+            également une indication sur la longueur de la clé probable.
+            <br />
+            Si l'on connait le nombre de symboles que comporte la clé, il devient possible de procéder par analyse de
+            fréquences sur chacun des sous-textes déterminés en sélectionnant des lettres du message clair à intervalle
+            la longueur de la clef (autant de sous-textes que la longueur de la clef). C'est l'attaque bien connue sur
+            les chiffrements mono-alphabétiques.
+        </div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Mathémathiques</div>
+        <div class="justify">En désignant la <i class="surligne">i<sup>e</sup></i> lettre du texte clair par <i
+                class="surligne">Texte[i]</i>, la <i class="surligne">i<sup>e</sup></i> du chiffré par
+            <i class="surligne">Chiffré[i]</i>, et
+            la <i class="surligne">i<sup>e</sup></i> lettre de la clé, répétée suffisamment de fois, par <i
+                class="surligne">Clés[i]</i>, elle se formalise par :
+            <br />
+            <ul>
+                <li>
+                    <i class="surligne">Chiffré[i] = (Texte[i] + Clés[i]) modulo 26</i>
+                </li>
+                <li>
+                    <i class="surligne">Texte[i] = (Chiffré[i] - Clés[i]) modulo 26</i>
+                </li>
+            </ul>
+            <br />
+            où x modulo 26 désigne le reste de la division entière de x par 26. Pour le chiffrement il suffit
+            d'effectuer l'addition des deux lettres puis de soustraire 26 si le résultat dépasse 26. Pour le
+            déchiffrement il suffit d'effectuer la soustraction et d'additionner 26 si le résultat est négatif. Le
+            déchiffrement est aussi une opération identique à celle du chiffrement pour la clé obtenue par Clé'[i] = 26
+            - Clé[i].
+            <br />
+        </div>
+        <br />
+    </div>
+    <hr />
+    <div class="bgdark">
+        <div class="right"></div>
+        <div class="surligne big3">Démonstration en live</div>
+        <div class="headform">Le texte à hacker :</div>
+        <div class="form"><textarea id="txtToCrack" cols="65" rows="10" onclick="clearOutputCrack();"
+                class="textbox">KQOWEFVJPUJUUNUKGLMEKJINMWUXFQMKJBGWRLFNFGHUDWUUMBSVLPSNCMUEKQCTESWREEKOYSSIWCTUAXYOTAPXPLWPNTCGOJBGFQHTDWXIZAYGFFNSXCSEYNCTSSPNTUJNYTGGWZGRWUUNEJUUQEAPYMEKQHUIDUXFPGUYTSMTFFSHNUOCZGMRUWEYTRGKMEEDCTVRECFBDJQCUSWVBPNLGOYLSKMTEFVJJTWWMFMWPNMEMTMHRSPXFSSKFFSTNUOCZGMDOEOYEEKCPJRGPMURSKHFRSEIUEVGOYCWXIZAYGOSAANYDOEOYJLWUNHAMEBFELXYVLWNOJNSIOFRWUCCESWKVIDGMUCGOCRUWGNMAAFFVNSIUDEKQHCEUCPFCMPVSUDGAVEMNYMAMVLFMAOYFNTQCUAFVFJNXKLNEIWCWODCCULWRIFTWGMUSWOVMATNYBUHTCOCWFYTNMGYTQMKBBNLGFBTWOJFTWGNTEJKNEEDCLDHWTYYIDGMVRDGMPLSWGJLAGOEEKJOFEKUYTAANYTDWIYBNLNYNPWEBFNLFYNAJEBFR</textarea>
+            <button onclick="crack();">GO!</button>
+        </div>
+        <div class="headform">Déroulement du hack : <span id="elaps" class="surligne"></span></div>
+        <div class="form"><textarea cols="66" rows="1" id="display">>_</textarea></div>
+        <br />
+    </div>
+    <div w3-include-html="footer.html"></div>
+</body>
+
+</html>
