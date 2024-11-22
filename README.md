@@ -7,6 +7,6 @@
 
 ## Thématique : le chiffrement
 
-Accès au **[site](<https://borisfr.github.io/NSI/www/>)**.
+## Accès au **[site](<https://borisfr.github.io/NSI/www/>)**
 
 <img src="www/nsi_design.svg" alt="NSI" style="display: block; margin: 0 auto"/>
